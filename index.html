@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <title>Document</title>
+</head>
+<body>
+  <button onclick="getRequest('http://api.icndb.com/jokes/')">Make the HTTP GET
+      Request</button>
+  <script>
+      function getRequest(url) {
+          $.getJSON(url, function (result) {
+              const recursiveDisplay = (arr,newObj) => {
+                  //debugger
+                  if (!Array.isArray(arr)) {
+                   if(typeof newObj[arr] ==="object") {
+                       console.log("this is an object")
+                       nest(newObj[arr])
+                       return
+                   } else {
+                       console.log("this is not an object")
+                       document.getElementById("doc-text").innerHTML += newObj[arr] + "<br/>"
+                       return
+                   }
+                  }
+                  else if (arr.length > 1) {
+                     //debugger
+                      recursiveDisplay(arr[0],newObj)
+                      return recursiveDisplay(arr.slice(1),newObj)
+                  }
+                  else if(arr.length===1){
+                    return  recursiveDisplay(arr[0],newObj)
+                  }
+              }
+              function nest(obj) {
+               return recursiveDisplay(Object.keys(obj),obj)
+           }
+           nest(result)
+          }
+          )
+      }
+  </script>
+  <div id="doc-text">
+  </div>
+</body>
+</html>
